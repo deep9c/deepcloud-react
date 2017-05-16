@@ -1,0 +1,7 @@
+-r requirements.txt
+mock
+codecov
+pytest-cov
+pytest>=2.8
+notebook
+requests-mock

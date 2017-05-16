@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic');
+@import url('font-awesome/css/font-awesome.min.css');
+
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+body > #header {
+	background: #f5f5f5;
+	box-shadow: 0 0 0 1px #D4D4D5,0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.15);
+	border-radius: 0 0 2px 2px;
+}
+
+#ipython_notebook img {
+	content:url("Deep Cloud Logo.png");
+}
+
+#header-container > .btn.btn-default.btn-sm.navbar-btn.pull-right {
+	position:relative;
+	padding-right: 1.9em;
+}
+
+#myIFrame > html > body > #header > #header-container {
+	display: none !important;
+}
+
+#header-container > .btn.btn-default.btn-sm.navbar-btn.pull-right::after {
+	content: "\f085";
+	font-family: FontAwesome;
+	position:absolute;
+	padding-left: 3px;
+}
+
+.btn-default, .btn-sm{
+	box-shadow: none;
+	border: none;
+	background: 0 0;
+	transition: color .1s ease;
+	border-radius: .28571429rem;
+}
+
+span#login_widget > .button, #logout {
+	background: 0 0;
+	position:relative;
+	padding-right: 1.9em;
+	margin-left: 10px;
+}
+
+span#login_widget > .button, #logout::after {
+	content: "\f08b";
+	font-family: FontAwesome;
+	position:absolute;
+	padding-left: 3px;
+}
+
+.navbar-btn.btn-sm {
+	color: rgba(0,0,0,.87);
+}

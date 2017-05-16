@@ -1,0 +1,23 @@
+{
+    "input-components" : 
+                [
+                    {
+                        "name" : "file-upload",
+                        "type" : "file",
+                        "text" : "Choose File"
+                    },
+                    {
+                        "name" : "submit-button",
+                        "type" : "button",
+                        "text" : "Predict"
+                    }
+                ],
+            "output-components": 
+                [
+                    {
+                        "name" : "result",
+                        "type" : "div"
+                    }
+                ]
+            
+}

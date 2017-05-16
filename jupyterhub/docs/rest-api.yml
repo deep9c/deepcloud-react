@@ -1,0 +1,485 @@
+# see me at: http://petstore.swagger.io/?url=https://raw.githubusercontent.com/jupyter/jupyterhub/master/docs/rest-api.yml#/default
+swagger: '2.0'
+info:
+  title: JupyterHub
+  description: The REST API for JupyterHub
+  version: 0.7.0
+  license:
+    name: BSD-3-Clause
+schemes:
+  - [http, https]
+securityDefinitions:
+  token:
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+  - token: []
+basePath: /hub/api
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  /:
+    get:
+      summary: Get JupyterHub version
+      description: |
+        This endpoint is not authenticated for the purpose of clients and user
+        to identify the JupyterHub version before setting up authentication.
+      responses:
+        '200':
+          description: The JupyterHub version
+          schema:
+            type: object
+            properties:
+              version:
+                type: string
+                description: The version of JupyterHub itself
+  /info:
+    get:
+      summary: Get detailed info about JupyterHub
+      description: |
+        Detailed JupyterHub information, including Python version,
+        JupyterHub's version and executable path,
+        and which Authenticator and Spawner are active.
+      responses:
+        '200':
+          description: Detailed JupyterHub info
+          schema:
+            type: object
+            properties:
+              version:
+                type: string
+                description: The version of JupyterHub itself
+              python:
+                type: string
+                description: The Python version, as returned by sys.version
+              sys_executable:
+                type: string
+                description: The path to sys.executable running JupyterHub
+              authenticator:
+                type: object
+                properties:
+                  class:
+                    type: string
+                    description: The Python class currently active for JupyterHub Authentication
+                  version:
+                    type: string
+                    description: The version of the currently active Authenticator
+              spawner:
+                type: object
+                properties:
+                  class:
+                    type: string
+                    description: The Python class currently active for spawning single-user notebook servers
+                  version:
+                    type: string
+                    description: The version of the currently active Spawner
+  /users:
+    get:
+      summary: List users
+      responses:
+        '200':
+          description: The Hub's user list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      summary: Create multiple users
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              usernames:
+                type: array
+                description: list of usernames to create on the Hub
+                items:
+                  type: string
+              admin:
+                description: whether the created users should be admins
+                type: boolean
+      responses:
+        '201':
+          description: The users have been created
+          schema:
+            type: array
+            description: The created users
+            items:
+              $ref: '#/definitions/User'
+  /users/{name}:
+    get:
+      summary: Get a user by name
+      parameters:
+        - name: name
+          description: username
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The User model
+          schema:
+            $ref: '#/definitions/User'
+    post:
+      summary: Create a single user
+      parameters:
+        - name: name
+          description: username
+          in: path
+          required: true
+          type: string
+      responses:
+        '201':
+          description: The user has been created
+          schema:
+            $ref: '#/definitions/User'
+    patch:
+      summary: Modify a user
+      description: Change a user's name or admin status
+      parameters:
+        - name: name
+          description: username
+          in: path
+          required: true
+          type: string
+        - name: data
+          in: body
+          required: true
+          description: Updated user info. At least one key to be updated (name or admin) is required.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: the new name (optional, if another key is updated i.e. admin)
+              admin:
+                type: boolean
+                description: update admin (optional, if another key is updated i.e. name)
+      responses:
+        '200':
+          description: The updated user info
+          schema:
+            $ref: '#/definitions/User'
+    delete:
+      summary: Delete a user
+      parameters:
+        - name: name
+          description: username
+          in: path
+          required: true
+          type: string
+      responses:
+        '204':
+          description: The user has been deleted
+  /users/{name}/server:
+    post:
+      summary: Start a user's single-user notebook server
+      parameters:
+        - name: name
+          description: username
+          in: path
+          required: true
+          type: string
+      responses:
+        '201':
+          description: The user's notebook server has started
+        '202':
+          description: The user's notebook server has not yet started, but has been requested
+    delete:
+      summary: Stop a user's server
+      parameters:
+        - name: name
+          description: username
+          in: path
+          required: true
+          type: string
+      responses:
+        '204':
+          description: The user's notebook server has stopped
+        '202':
+          description: The user's notebook server has not yet stopped as it is taking a while to stop
+  /users/{name}/admin-access:
+    post:
+      summary: Grant admin access to this user's notebook server
+      parameters:
+        - name: name
+          description: username
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Sets a cookie granting the requesting administrator access to the user's notebook server
+  /groups:
+    get:
+      summary: List groups
+      responses:
+        '200':
+          description: The list of groups
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Group'
+  /groups/{name}:
+    get:
+      summary: Get a group by name
+      parameters:
+        - name: name
+          description: group name
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The group model
+          schema:
+            $ref: '#/definitions/Group'
+    post:
+      summary: Create a group
+      parameters:
+        - name: name
+          description: group name
+          in: path
+          required: true
+          type: string
+      responses:
+        '201':
+          description: The group has been created
+          schema:
+            $ref: '#/definitions/Group'
+    delete:
+      summary: Delete a group
+      parameters:
+        - name: name
+          description: group name
+          in: path
+          required: true
+          type: string
+      responses:
+        '204':
+          description: The group has been deleted
+  /groups/{name}/users:
+    post:
+      summary: Add users to a group
+      parameters:
+        - name: name
+          description: group name
+          in: path
+          required: true
+          type: string
+        - name: data
+          in: body
+          required: true
+          description: The users to add to the group
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                description: List of usernames to add to the group
+                items:
+                  type: string
+      responses:
+        '200':
+          description: The users have been added to the group
+          schema:
+            $ref: '#/definitions/Group'
+    delete:
+      summary: Remove users from a group
+      parameters:
+        - name: name
+          description: group name
+          in: path
+          required: true
+          type: string
+        - name: data
+          in: body
+          required: true
+          description: The users to remove from the group
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                description: List of usernames to remove from the group
+                items:
+                  type: string
+      responses:
+        '200':
+          description: The users have been removed from the group
+  /services:
+    get:
+      summary: List services
+      responses:
+        '200':
+          description: The service list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Service'
+  /services/{name}:
+    get:
+      summary: Get a service by name
+      parameters:
+        - name: name
+          description: service name
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The Service model
+          schema:
+            $ref: '#/definitions/Service'
+  /proxy:
+    get:
+      summary: Get the proxy's routing table
+      description: A convenience alias for getting the routing table directly from the proxy
+      responses:
+        '200':
+          description: Routing table
+          schema:
+            type: object
+            description: configurable-http-proxy routing table (see configurable-http-proxy docs for details)
+    post:
+      summary: Force the Hub to sync with the proxy
+      responses:
+        '200':
+          description: Success
+    patch:
+      summary: Notify the Hub about a new proxy
+      description: Notifies the Hub of a new proxy to use.
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Any values that have changed for the new proxy. All keys are optional.
+          schema:
+            type: object
+            properties:
+              ip:
+                type: string
+                description: IP address of the new proxy
+              port:
+                type: string
+                description: Port of the new proxy
+              protocol:
+                type: string
+                description: Protocol of new proxy, if changed
+              auth_token:
+                type: string
+                description: CONFIGPROXY_AUTH_TOKEN for the new proxy
+      responses:
+        '200':
+          description: Success
+  /authorizations/token/{token}:
+    get:
+      summary: Identify a user from an API token
+      parameters:
+      - name: token
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: The user identified by the API token
+          schema:
+            $ref: '#/definitions/User'
+  /authorizations/cookie/{cookie_name}/{cookie_value}:
+    get:
+      summary: Identify a user from a cookie
+      description: Used by single-user notebook servers to hand off cookie authentication to the Hub
+      parameters:
+      - name: cookie_name
+        in: path
+        required: true
+        type: string
+      - name: cookie_value
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: The user identified by the cookie
+          schema:
+            $ref: '#/definitions/User'
+  /shutdown:
+    post:
+      summary: Shutdown the Hub
+      parameters:
+        - name: proxy
+          in: body
+          type: boolean
+          description: Whether the proxy should be shutdown as well (default from Hub config)
+        - name: servers
+          in: body
+          type: boolean
+          description: Whether users's notebook servers should be shutdown as well (default from Hub config)
+      responses:
+        '200':
+          description: Hub has shutdown
+definitions:
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The user's name
+      admin:
+        type: boolean
+        description: Whether the user is an admin
+      groups:
+        type: array
+        description: The names of groups where this user is a member
+        items:
+          type: string
+      server:
+        type: string
+        description: The user's notebook server's base URL, if running; null if not.
+      pending:
+        type: string
+        enum: ["spawn", "stop"]
+        description: The currently pending action, if any
+      last_activity:
+        type: string
+        format: date-time
+        description: Timestamp of last-seen activity from the user
+  Group:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The group's name
+      users:
+        type: array
+        description: The names of users who are members of this group
+        items:
+          type: string
+  Service:
+    type: object
+    properties:
+      name:
+        type: string
+        description: The service's name
+      admin:
+        type: boolean
+        description: Whether the service is an admin
+      url:
+        type: string
+        description: The internal url where the service is running
+      prefix:
+        type: string
+        description: The proxied URL prefix to the service's url
+      pid:
+        type: number
+        description: The PID of the service process (if managed)
+      command:
+        type: array
+        description: The command used to start the service (if managed)
+        items:
+          type: string
