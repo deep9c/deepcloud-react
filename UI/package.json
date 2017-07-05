@@ -1,7 +1,7 @@
 {
   "name": "deep-cloud",
   "version": "1.0.0",
-  "description": "",
+  "description": "DeepCloud Front end React App",
   "main": "index.js",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot",
