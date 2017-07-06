@@ -22,6 +22,7 @@ var NotebookContainer = require('../containers/NotebookContainer');
 var ModelStoreContainer = require('../containers/ModelStoreContainer');
 var ModelDetailsContainer = require('../containers/ModelDetailsContainer');
 var ModelTestScreenContainer = require('../containers/ModelTestScreenContainer');
+var ChartsContainer=require('../containers/ChartsContainer');
 
 var routes = (
   <Router history={hashHistory}>
@@ -39,6 +40,7 @@ var routes = (
 		<Route path='modelDetails' name='Model Details' component={ModelDetailsContainer} />
 		<Route path='modelTest' name='Model Test' component={ModelTestScreenContainer} />
 		<Route path='Contact' name='Contact' component={ContactContainer} />
+		<Route path='Charts' name='Charts' component={ChartsContainer} />
 	  </Route>
     </Route>
   </Router>

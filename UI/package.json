@@ -18,7 +18,8 @@
     "express": "latest",
     "firebase": "^2.3.2",
     "fixed-data-table": "^0.6.3",
-    "highcharts": "^4.2.5",
+    "highcharts": "^4.2.7",
+    "highcharts-more": "^0.1.2",
     "html-webpack-plugin": "^2.19.0",
     "material-ui": "^0.16.3",
     "react": "^15.4.0",
@@ -30,6 +31,8 @@
     "react-sidebar": "^2.2.1",
     "react-tap-event-plugin": "^2.0.1",
     "semantic-ui": "^2.2.2",
+    "socket.io-client": "^2.0.3",
+    "socket.io-react": "^1.2.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
