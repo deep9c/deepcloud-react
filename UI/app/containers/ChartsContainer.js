@@ -126,11 +126,15 @@ var ChartsContainer = React.createClass({
 
   processCanvas: function(){
   	// ************ FIRST.js STARTS *****************
+  	var el = document.getElementById('div1_1_2_1'); // get canvas
+  	
+
+
 var options = {
-    percent: 25,
-    size: 320,
-    lineWidth: 15,
-    rotate: 0,
+    percent:  el.getAttribute('data-percent') || 25,
+    size: el.getAttribute('data-size') || 320,
+    lineWidth: el.getAttribute('data-line') || 15,
+    rotate: el.getAttribute('data-rotate') || 0,
 }
 
 var canvas = this.refs.canvas;
