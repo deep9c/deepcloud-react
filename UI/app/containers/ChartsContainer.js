@@ -33,7 +33,7 @@ var ChartsContainer = React.createClass({
 	this.showAccuracychart();
 	this.ramContainer();
 
-	socket = io.connect('http://localhost:3333');
+	socket = io.connect('http://localhost:8889');
 	socket.on('news', (msg)=>{
 		this.onSocketMsg(msg,socket);
 	//this.state.fullname = 'msg:- ' + msg;
