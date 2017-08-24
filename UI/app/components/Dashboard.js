@@ -79,6 +79,10 @@ var Dashboard = React.createClass({
 									<i className="shop icon"></i>
 									Model Store
 								</Link>
+								<Link to='/dashboard/Trainer' className="item menuItem" id="trainerLink">
+									<i className="table icon"></i>
+									Trainer
+								</Link>
 								<Link to='/dashboard/Charts' className="item menuItem" id="chartsLink">
 									<i className="table icon"></i>
 									Charts

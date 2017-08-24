@@ -22,6 +22,7 @@ var NotebookContainer = require('../containers/NotebookContainer');
 var ModelStoreContainer = require('../containers/ModelStoreContainer');
 var ModelDetailsContainer = require('../containers/ModelDetailsContainer');
 var ModelTestScreenContainer = require('../containers/ModelTestScreenContainer');
+var TrainerContainer=require('../containers/TrainerContainer');
 var ChartsContainer=require('../containers/ChartsContainer');
 
 var routes = (
@@ -40,6 +41,7 @@ var routes = (
 		<Route path='modelDetails' name='Model Details' component={ModelDetailsContainer} />
 		<Route path='modelTest' name='Model Test' component={ModelTestScreenContainer} />
 		<Route path='Contact' name='Contact' component={ContactContainer} />
+		<Route path='Trainer' name='Trainer' component={TrainerContainer} />
 		<Route path='Charts' name='Charts' component={ChartsContainer} />
 	  </Route>
     </Route>
