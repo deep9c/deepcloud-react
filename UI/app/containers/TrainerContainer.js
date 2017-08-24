@@ -128,17 +128,11 @@ var TrainerContainer = React.createClass({
 	*/
 
 	handleSubmitData: function (e) {
+		console.log('trainer form submitted');
 		var self = this;
-		$('.ui.modal').modal('destroy');
-		$('.ui.modal')
-			.modal({
-				closable: false,
-				onDeny: function () {
-
-				},
-				onApprove: function () {
-					self.setState({
-						result: 'Uploading and training ...'
+		
+		self.setState({
+						//result: 'Uploading and training ...'
 					});
 					e.preventDefault();
 					var xhr = new XMLHttpRequest();
@@ -162,6 +156,7 @@ var TrainerContainer = React.createClass({
 					var onError = function (e) {
 						self.handleErrorResponse();
 					};
+					console.log('aaaaaa');
 					var formData = new FormData();
 					formData.append('upload', self.state.modelfile);
 					formData.append('epoch', self.state.epoch);
@@ -179,6 +174,7 @@ var TrainerContainer = React.createClass({
 					xhr.addEventListener('error', onError, false);
 					xhr.addEventListener('progress', onProgress, false);
 					xhr.send(formData);
+					console.log('bbbbb');
 					//xhr.addEventListener('readystatechange', onReady, false);
 					var pollTimer = setInterval(function () {
 						var unprocessedResponseLength = xhr.responseText.length;
@@ -205,9 +201,8 @@ var TrainerContainer = React.createClass({
 					self.setState({
 						ajaxPollTimer: pollTimer
 					});
-				}
-			})
-			.modal('show');
+
+		
 	},
 	/*handleServiceResponse: function (responseObject) {
 		var accuracyList = JSON.parse(responseObject.Accuracy);
