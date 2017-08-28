@@ -86,7 +86,7 @@ var ChartsContainer = React.createClass({
     };
 
     drawCircle('#efefef', options.lineWidth, 100 / 100);
-    drawCircle('#555555', options.lineWidth, options.percent / 100);
+    drawCircle('#555555', options.lineWidth, options.percent / 5);
 
   },
 
@@ -108,7 +108,7 @@ var ChartsContainer = React.createClass({
       this.state.lossChart.xAxis[0].setExtremes(1, data.acTr.length);
 
       //$('#div1_1_2_1').attr("data-percent", 5);
-      var str1= "TRAINING<br><br>"+ data.acTr.length+"/100 <br> EPOCH <br> "+data.sam_s+" <br> SAMPLES/S";
+      var str1= "TRAINING<br><br>"+ data.acTr.length+"/5 <br> EPOCH <br> "+data.sam_s+" <br> SAMPLES/S";
       $('#div1_1_2_2').html(str1);
       var str3 = "BATCH<br>"+data.batch+"/1875 <br><br> SECONDS/EPOCH <br> "+ data.sec_ep;
       $('#div1_1_2_3').html(str3);
